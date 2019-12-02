@@ -13,4 +13,24 @@ public class Game
         var deck = Player1.Deal(cards); //Returns Player2's deck.  Player1 keeps his.
         Player2.Deck = deck;
     }
+
+    public bool IsEndOfGame()
+    {
+        if(!Player1.Deck.Any())
+        {
+            Console.WriteLine(Player1.Name + " is out of cards!  " + Player2.Name + " WINS!");
+            return true;
+        }
+        else if(!Player2.Deck.Any())
+        {
+            Console.WriteLine(Player2.Name + " is out of cards!  " + Player1.Name + " WINS!");
+            return true;
+        }
+        else if(TurnCount > 1000)
+        {
+            Console.WriteLine("Infinite game!  Let's call the whole thing off.");
+            return true;
+        }
+        return false;
+    }
 }

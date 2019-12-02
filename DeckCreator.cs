@@ -1,6 +1,22 @@
 public static class DeckCreator
 { 
-    public static Queue<Card> CreateCards() { ... }
+    public static Queue<Card> CreateCards()
+    {
+        Queue<Card> cards = new Queue<Card>();
+        for(int i = 2; i <= 14; i++)
+        {
+            foreach(Suit suit in Enum.GetValues(typeof(Suit)))
+            {
+                cards.Enqueue(new Card()
+                {
+                    Suit = suit,
+                    Value = i,
+                    DisplayName = GetShortName(i, suit)
+                });
+            }
+        }
+        return Shuffle(cards);
+    }
 
     private static Queue<Card> Shuffle(Queue<Card> cards)
     {
