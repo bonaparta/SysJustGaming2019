@@ -1,0 +1,10 @@
+/Users/swyi/Documents/src/C#/VSCodeHelloWorld/bin/Debug/netcoreapp2.0/VSCodeHelloWorld.deps.json
+/Users/swyi/Documents/src/C#/VSCodeHelloWorld/bin/Debug/netcoreapp2.0/VSCodeHelloWorld.runtimeconfig.json
+/Users/swyi/Documents/src/C#/VSCodeHelloWorld/bin/Debug/netcoreapp2.0/VSCodeHelloWorld.runtimeconfig.dev.json
+/Users/swyi/Documents/src/C#/VSCodeHelloWorld/bin/Debug/netcoreapp2.0/VSCodeHelloWorld.dll
+/Users/swyi/Documents/src/C#/VSCodeHelloWorld/bin/Debug/netcoreapp2.0/VSCodeHelloWorld.pdb
+/Users/swyi/Documents/src/C#/VSCodeHelloWorld/obj/Debug/netcoreapp2.0/VSCodeHelloWorld.csproj.CoreCompileInputs.cache
+/Users/swyi/Documents/src/C#/VSCodeHelloWorld/obj/Debug/netcoreapp2.0/VSCodeHelloWorld.AssemblyInfoInputs.cache
+/Users/swyi/Documents/src/C#/VSCodeHelloWorld/obj/Debug/netcoreapp2.0/VSCodeHelloWorld.AssemblyInfo.cs
+/Users/swyi/Documents/src/C#/VSCodeHelloWorld/obj/Debug/netcoreapp2.0/VSCodeHelloWorld.dll
+/Users/swyi/Documents/src/C#/VSCodeHelloWorld/obj/Debug/netcoreapp2.0/VSCodeHelloWorld.pdb
