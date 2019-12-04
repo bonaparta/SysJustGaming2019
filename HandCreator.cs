@@ -55,8 +55,8 @@ class HandCreator
         ArrayList<Card> arCards = new ArrayList<Card>();
         arCards.Add(cards);
         arCards.Sort(Comparer<Card>.Create((x, y) =>
-            (x.Value > y.Value || (x.Value == y.Value && x.Suit > y.Suit)) ?  1 :
-            (x.Value < y.Value || (x.Value == y.Value && x.Suit < y.Suit)) ?  -1 : 0);
+            (x.Value > y.Value || (x.Value == y.Value && x.Suit > y.Suit)) ? 1 :
+            (x.Value < y.Value || (x.Value == y.Value && x.Suit < y.Suit)) ? -1 : 0);
         hand.Deck = arCards;
         return hand;
     }
@@ -73,8 +73,9 @@ class HandCreator
         Suit nDefaultSuit = cards.Peek().Suit;
         foreach (Card card in cards)
         {
-            if (nDefaultSuit == card.Suit && !arLinearSort[card.Value - (int)CardValue.MinValue])
-                arLinearSort[i] = true;
+            int nIndex = card.Value - (int)CardValue.MinValue;
+            if (nDefaultSuit == card.Suit && !arLinearSort[nIndex])
+                arLinearSort[nIndex] = true;
             else
                 return Pair.Create(false, null);
         }
@@ -83,16 +84,74 @@ class HandCreator
         hand.HandRank = HandRank.StraightFlush;
         ArrayList<Card> arCards = new ArrayList<Card>();
         arCards.Add(cards);
-        arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ?  1 : x.Value < y.Value ?  -1 : 0);
+        arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ? 1 : x.Value < y.Value ? -1 : 0);
         return Pair.Create(true, hand);
     }
 
-    private static Pair<bool, Hand?> CheckFourOfAKind(Queue<Card> cards) {
-        return true;
+    private static Pair<bool, Hand?> CheckFourOfAKind(Queue<Card> cards)
+    {
+        if (0 == cards.Count)
+            return Pair.Create(false, null);
+
+        List<Card>[] arLinearSort = new ArrayList[(int)CardValue.MaxValue - (int)CardValue.MinValue + 1];
+        for (int i = 0; i < arLinearSort.Length; ++i)
+            arLinearSort[i] = new ArrayList<Card>();
+
+        int nCount = 0;
+        foreach (Card card in cards)
+        {
+            int nIndex = card.Value - (int)CardValue.MinValue;
+            arLinearSort[nIndex].Add(card);
+            nCount = Math.Max(nCount, arLinearSort[nIndex].Count);
+        }
+        if (Hand.s_nFourOfAKind != nCount)
+            return Pair.Create(false, null);
+
+        Hand hand = new Hand();
+        hand.HandRank = HandRank.FourOfAKind;
+        ArrayList<Card> arCards = new ArrayList<Card>();
+
+        for (int i = 0; i < arLinearSort.Count; ++i)
+        {
+            if (HandRank.FourOfAKind == arLinearSort[i])
+            {
+                arLinearSort[i].Sort(Comparer<Card>.Create((x, y) => x.Suit > y.Suit ? 1 : x.Suit < y.Suit ? -1 : 0);
+                arCards.Add(arLinearSort[i]);
+                for (int j = 0; j < arLinearSort.Count; ++j)
+                {
+                    if (HandRank.FourOfAKind != arLinearSort[j])
+                    {
+                        arCards.Add(arLinearSort[j]);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return Pair.Create(true, hand);
     }
 
-    private static Pair<bool, Hand?> CheckFullHouse(Queue<Card> cards) {
-        return true;
+    private static Pair<bool, Hand?> CheckFullHouse(Queue<Card> cards)
+    {
+        Pair<bool, Hand?> prThreeOfAKindHand = CheckThreeOfAKind(cards);
+        if (!prThreeOfAKindHand.First)
+            return Pair.Create(false, null);
+
+        Queue<Card> qPairCadidate = new Queue<Card>();
+        qPairCadidate.Add(prThreeOfAKindHand.Second.Deck.GetRange(Hand.s_nThreeOfAKind, prThreeOfAKindHand.Second.Deck.Count - Hand.s_nThreeOfAKind));
+
+        Pair<bool, Hand?> prPair = CheckPair(qPairCadidate);
+        if (!qPairCadidate.First)
+            return Pair.Create(false, null);
+
+        Hand hand = new Hand();
+        hand.HandRank = HandRank.FourOfAKind;
+        ArrayList<Card> arCards = new ArrayList<Card>();
+
+        hand.Deck = new ArrayList<Card>();
+        hand.Deck.Add(prThreeOfAKindHand.Second.Deck.GetRange(0, Hand.s_nThreeOfAKind);
+        hand.Deck.Add(qPairCadidate.Second.Deck);
+        return Pair.Create(true, hand);
     }
 
     private static Pair<bool, Hand?> CheckFlush(Queue<Card> cards)
@@ -111,7 +170,7 @@ class HandCreator
         hand.HandRank = HandRank.Flush;
         ArrayList<Card> arCards = new ArrayList<Card>();
         arCards.Add(cards);
-        arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ?  1 : x.Value < y.Value ?  -1 : 0);
+        arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ? 1 : x.Value < y.Value ? -1 : 0);
         return Pair.Create(true, hand);
     }
 
@@ -126,8 +185,9 @@ class HandCreator
 
         foreach (Card card in cards)
         {
-            if (!arLinearSort[card.Value - (int)CardValue.MinValue])
-                arLinearSort[i] = true;
+            int nIndex = card.Value - (int)CardValue.MinValue;
+            if (!arLinearSort[nIndex])
+                arLinearSort[nIndex] = true;
             else
                 return Pair.Create(false, null);
         }
@@ -140,12 +200,51 @@ class HandCreator
         hand.HandRank = HandRank.Straight;
         ArrayList<Card> arCards = new ArrayList<Card>();
         arCards.Add(cards);
-        arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ?  1 : x.Value < y.Value ?  -1 : 0);
+        arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ? 1 : x.Value < y.Value ? -1 : 0);
         return Pair.Create(true, hand);
     }
 
-    private static Pair<bool, Hand?> CheckThreeOfAKind(Queue<Card> cards) {
-        return true;
+    private static Pair<bool, Hand?> CheckThreeOfAKind(Queue<Card> cards)
+    {
+        if (0 == cards.Count)
+            return Pair.Create(false, null);
+
+        List<Card>[] arLinearSort = new ArrayList[(int)CardValue.MaxValue - (int)CardValue.MinValue + 1];
+        for (int i = 0; i < arLinearSort.Length; ++i)
+            arLinearSort[i] = new ArrayList<Card>();
+
+        int nCount = 0;
+        foreach (Card card in cards)
+        {
+            int nIndex = card.Value - (int)CardValue.MinValue;
+            arLinearSort[nIndex].Add(card);
+            nCount = Math.Max(nCount, arLinearSort[nIndex].Count);
+        }
+        if (Hand.s_nThreeOfAKind != nCount)
+            return Pair.Create(false, null);
+
+        Hand hand = new Hand();
+        hand.HandRank = HandRank.ThreeOfAKind;
+        ArrayList<Card> arCards = new ArrayList<Card>();
+        
+        for (int i = 0; i < arLinearSort.Count; ++i)
+        {
+            if (HandRank.ThreeOfAKind == arLinearSort[i])
+            {
+                arLinearSort[i].Sort(Comparer<Card>.Create((x, y) => x.Suit > y.Suit ? 1 : x.Suit < y.Suit ? -1 : 0);
+                arCards.Add(arLinearSort[i]);
+                for (int j = 0; j < arLinearSort.Count; ++j)
+                {
+                    if (HandRank.ThreeOfAKind != arLinearSort[j])
+                    {
+                        arCards.Add(arLinearSort[j]);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return Pair.Create(true, hand);
     }
 
     private static Pair<bool, Hand?> CheckTwoPair(Queue<Card> cards) {
