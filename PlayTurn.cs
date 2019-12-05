@@ -1,6 +1,6 @@
-public void PlayTurn()
-{
-    Queue<Card> pool = new Queue<Card>();
+using System.Collections.Generic;
+
+pool = new Queue<Card>();
 
     //Step 1: Each player flips a card
     var player1card = Player1.Deck.Dequeue();

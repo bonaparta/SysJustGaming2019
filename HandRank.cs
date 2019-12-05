@@ -1,3 +1,5 @@
+namespace PokerGame
+{
 public enum HandRank
 {
     StraightFlush,
@@ -10,3 +12,4 @@ public enum HandRank
     OnePair,
     HighCard
 }
+}  // namespace PokerGame

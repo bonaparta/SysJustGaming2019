@@ -1,3 +1,5 @@
+namespace PokerGame
+{
 public enum CardValue
 {
     One = 1,
@@ -8,3 +10,4 @@ public enum CardValue
     Ace = 14,
     MaxValue = 14
 }
+} // namespace PokerGame

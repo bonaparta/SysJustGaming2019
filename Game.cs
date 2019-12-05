@@ -1,3 +1,5 @@
+namespace PokerGame
+{
 public class Game
 {
     private Player Player1;
@@ -34,3 +36,4 @@ public class Game
         return false;
     }
 }
+}  // namespace PokerGame

@@ -1,3 +1,5 @@
+namespace PokerGame
+{
 public enum Suit
 {
     Clubs,
@@ -5,3 +7,4 @@ public enum Suit
     Spades,
     Hearts
 }
+}  // namespace PokerGame

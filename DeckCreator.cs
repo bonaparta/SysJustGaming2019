@@ -1,11 +1,15 @@
+using System.Collections.Generic;
+
+namespace PokerGame
+{
 public static class DeckCreator
 { 
-    public static Queue<Card> CreateCards()
+    public static Queue CreateCards()
     {
-        Queue<Card> cards = new Queue<Card>();
+        Queue cards = new Queue();
         for(int i = 2; i <= 14; i++)
         {
-            foreach(Suit suit in Enum.GetValues(typeof(Suit)))
+            foreach(Suit suit in System.Enum.GetValues(typeof(Suit)))
             {
                 cards.Enqueue(new Card()
                 {
@@ -18,7 +22,7 @@ public static class DeckCreator
         return Shuffle(cards);
     }
 
-    private static Queue<Card> Shuffle(Queue<Card> cards)
+    private static Queue Shuffle(Queue cards)
     {
         //Shuffle the existing cards using Fisher-Yates Modern
         List<Card> transformedCards = cards.ToList();
@@ -34,7 +38,7 @@ public static class DeckCreator
             transformedCards[k] = temp;
         }
 
-        Queue<Card> shuffledCards = new Queue<Card>();
+        Queue shuffledCards = new Queue();
         foreach(var card in transformedCards)
         {
             shuffledCards.Enqueue(card);
@@ -70,3 +74,4 @@ public static class DeckCreator
         return valueDisplay + Enum.GetName(typeof(Suit), suit)[0];
     }
 }
+}  // namespace PokerGame
