@@ -90,6 +90,7 @@ class HandCreator
         ArrayList<Card> arCards = new ArrayList<Card>();
         arCards.Add(cards);
         arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ? 1 : x.Value < y.Value ? -1 : 0));
+        hand.Deck = arCards;
         return System.Tuple.Create(true, hand);
     }
 
@@ -118,7 +119,7 @@ class HandCreator
 
         for (int i = 0; i < arLinearSort.Count; ++i)
         {
-            if (HandRank.FourOfAKind == arLinearSort[i])
+            if (Hand.s_nFourOfAKind == arLinearSort[i].Count)
             {
                 arLinearSort[i].Sort(Comparer<Card>.Create((x, y) => x.Suit > y.Suit ? 1 : x.Suit < y.Suit ? -1 : 0));
                 arCards.Add(arLinearSort[i]);
@@ -133,6 +134,7 @@ class HandCreator
                 break;
             }
         }
+        hand.Deck = arCards;
         return System.Tuple.Create(true, hand);
     }
 
@@ -150,12 +152,11 @@ class HandCreator
             return System.Tuple.Create(false, null);
 
         Hand hand = new Hand();
-        hand.HandRank = HandRank.FourOfAKind;
+        hand.HandRank = HandRank.FullHouse;
         ArrayList<Card> arCards = new ArrayList<Card>();
-
-        hand.Deck = new ArrayList<Card>();
-        hand.Deck.Add(prThreeOfAKindHand.Second.Deck.GetRange(0, Hand.s_nThreeOfAKind));
-        hand.Deck.Add(qPairCadidate.Second.Deck);
+        arCards.Add(prThreeOfAKindHand.Second.Deck.GetRange(0, Hand.s_nThreeOfAKind));
+        arCards.Add(qPairCadidate.Second.Deck);
+        hand.Deck = arCards;
         return System.Tuple.Create(true, hand);
     }
 
@@ -176,6 +177,7 @@ class HandCreator
         ArrayList<Card> arCards = new ArrayList<Card>();
         arCards.Add(cards);
         arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ? 1 : x.Value < y.Value ? -1 : 0));
+        hand.Deck = arCards;
         return System.Tuple.Create(true, hand);
     }
 
@@ -206,6 +208,7 @@ class HandCreator
         ArrayList<Card> arCards = new ArrayList<Card>();
         arCards.Add(cards);
         arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ? 1 : x.Value < y.Value ? -1 : 0));
+        hand.Deck = arCards;
         return System.Tuple.Create(true, hand);
     }
 
@@ -234,7 +237,7 @@ class HandCreator
         
         for (int i = 0; i < arLinearSort.Count; ++i)
         {
-            if (HandRank.ThreeOfAKind == arLinearSort[i])
+            if (Hand.s_nPair == arLinearSort[i].Count)
             {
                 arLinearSort[i].Sort(Comparer<Card>.Create((x, y) => x.Suit > y.Suit ? 1 : x.Suit < y.Suit ? -1 : 0));
                 arCards.Add(arLinearSort[i]);
@@ -246,18 +249,74 @@ class HandCreator
                         break;
                     }
                 }
+                hand.Deck = arCards;
                 break;
             }
         }
         return System.Tuple.Create(true, hand);
     }
 
-    private static System.Tuple<bool, Hand?> CheckTwoPair(Queue cards) {
-        return true;
+    private static System.Tuple<bool, Hand?> CheckTwoPair(Queue cards)
+    {
+        System.Tuple<bool, Hand?> prOnePair = CheckOnePair(cards);
+        if (!prOnePair.First)
+            return System.Tuple.Create(false, null);
+
+        Queue qPairCadidate = new Queue();
+        qPairCadidate.Add(prOnePair.Second.Deck.GetRange(Hand.s_nPair, prOnePair.Second.Deck.Count - Hand.s_nPair));
+
+        System.Tuple<bool, Hand?> prPair = CheckPair(qPairCadidate);
+        if (!qPairCadidate.First)
+            return System.Tuple.Create(false, null);
+
+        Hand hand = new Hand();
+        hand.HandRank = HandRank.TwoPair;
+        ArrayList<Card> arCards = new ArrayList<Card>();
+        arCards.Add(prOnePair.Second.Deck.GetRange(0, Hand.s_nPair));
+        arCards.Add(qPairCadidate.Second.Deck);
+        hand.Deck = arCards;
+        return System.Tuple.Create(true, hand);
     }
 
-    private static System.Tuple<bool, Hand?> CheckOnePair(Queue cards) {
-        return true;
+    private static System.Tuple<bool, Hand?> CheckOnePair(Queue cards)
+    {
+        if (0 == cards.Count)
+            return System.Tuple.Create(false, null);
+
+        List<Card>[] arLinearSort = new ArrayList[(int)CardValue.MaxValue - (int)CardValue.MinValue + 1];
+        for (int i = 0; i < arLinearSort.Length; ++i)
+            arLinearSort[i] = new ArrayList<Card>();
+
+        int nCount = 0;
+        foreach (Card card in cards)
+        {
+            int nIndex = card.Value - (int)CardValue.MinValue;
+            arLinearSort[nIndex].Add(card);
+            nCount = Math.Max(nCount, arLinearSort[nIndex].Count);
+        }
+        if (Hand.s_nPair != nCount)
+            return System.Tuple.Create(false, null);
+
+        Hand hand = new Hand();
+        hand.HandRank = HandRank.OnePair;
+        ArrayList<Card> arCards = new ArrayList<Card>();
+        
+        for (int i = 0; i < arLinearSort.Count; ++i)
+        {
+            if (Hand.s_nPair == arLinearSort[i].Count)
+            {
+                arLinearSort[i].Sort(Comparer<Card>.Create((x, y) => x.Suit > y.Suit ? 1 : x.Suit < y.Suit ? -1 : 0));
+                arCards.Add(arLinearSort[i]);
+                for (int j = 0; j < arLinearSort.Count; ++j)
+                {
+                    if (i != j)
+                        arCards.Add(arLinearSort[j]);
+                }
+                hand.Deck = arCards;
+                break;
+            }
+        }
+        return System.Tuple.Create(true, hand);
     }
 }
 }  // namespace PokerGame

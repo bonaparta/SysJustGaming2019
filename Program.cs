@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VSCodeHelloWorld
+namespace SysJustGaming2019
 {
     class Program
     {
