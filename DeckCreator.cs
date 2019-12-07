@@ -16,7 +16,7 @@ public static class DeckCreator
                 {
                     Suit = suit,
                     Value = i,
-                    DisplayName = GetShortName(i, suit)
+                    Display = GetShortName(i, suit)
                 });
             }
         }

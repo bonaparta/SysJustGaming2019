@@ -15,10 +15,10 @@ namespace SysJustGaming2019
             {
                 Suit = PokerGame.Suit.Clubs,
                 Value = 1,
-                DisplayName = "S" + 10
+                Display = "S" + 10
             };
             Console.WriteLine(card.ToString());
-            Console.WriteLine(card.DisplayName);
+            Console.WriteLine(card.Display);
         }
     }
 }  // namespace SysJustGaming2019

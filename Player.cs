@@ -6,6 +6,7 @@ public class Player
 {
     public string Name { get; set; }
     public Queue<Card> Deck { get; set; }
+    public Hand SortedDeck { get; set; }
 
     public Player() { }
 
@@ -35,6 +36,27 @@ public class Player
 
         Deck = player1cards;
         return player2cards;
+    }
+
+    public void AddCard(Card card)
+    {
+        Deck.Enqueue(card);
+    }
+
+    public string Display
+    {
+        get
+        {
+            if (null == SortedDeck)
+                SortedDeck = HandCreator.Arrange(Deck);
+
+            string strReturn = System.Enum.GetName(typeof(HandRank), SortedDeck.HandRank);
+            foreach (Card card in SortedDeck.Deck)
+            {
+                strReturn += " " + card.Display;
+            }
+            return strReturn;
+        }
     }
 }
 }  // namespace PokerGame

@@ -4,7 +4,7 @@ namespace PokerGame
 {
 class HandCreator
 {
-    Hand Arrange(Queue<Card> cards)
+    public static Hand Arrange(Queue<Card> cards)
     {
         System.Tuple<bool, Hand> pairHand = CheckStraightFlush(cards);
         if (pairHand.Item1)

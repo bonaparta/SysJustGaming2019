@@ -51,7 +51,7 @@ public class Game
         pool.Enqueue(player1card);
         pool.Enqueue(player2card);
 
-        Console.WriteLine(Player1.Name + " plays " + player1card.DisplayName + ", " + Player2.Name + " plays " + player2card.DisplayName);
+        Console.WriteLine(Player1.Name + " plays " + player1card.Display + ", " + Player2.Name + " plays " + player2card.Display);
 
         while (player1card.Value == player2card.Value)
         {
@@ -80,7 +80,7 @@ public class Game
             pool.Enqueue(player1card);
             pool.Enqueue(player2card);
 
-            Console.WriteLine(Player1.Name + " plays " + player1card.DisplayName + ", " + Player2.Name + " plays " + player2card.DisplayName);
+            Console.WriteLine(Player1.Name + " plays " + player1card.Display + ", " + Player2.Name + " plays " + player2card.Display);
         }
 
         if (player1card.Value < player2card.Value)
