@@ -1,11 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 
 namespace PokerGame
 {
 class HandCreator
 {
-    Hand Arrange(Queue cards)
+    Hand Arrange(Queue<Card> cards)
     {
         System.Tuple<bool, Hand> pairHand = CheckStraightFlush(cards);
         if (pairHand.Item1)
@@ -58,7 +57,9 @@ class HandCreator
         Hand hand = new Hand();
         hand.HandRank = HandRank.HighCard;
         List<Card> arCards = new List<Card>();
-        arCards.Add(cards);
+        Card[] arQueueCards = cards.ToArray();
+        foreach (Card card in arQueueCards)
+            arCards.Add(card);
         arCards.Sort(Comparer<Card>.Create((x, y) =>
             (x.Value > y.Value || (x.Value == y.Value && x.Suit > y.Suit)) ? 1 :
             (x.Value < y.Value || (x.Value == y.Value && x.Suit < y.Suit)) ? -1 : 0));
@@ -66,7 +67,7 @@ class HandCreator
         return hand;
     }
 
-    private static System.Tuple<bool, Hand> CheckStraightFlush(Queue cards)
+    private static System.Tuple<bool, Hand> CheckStraightFlush(Queue<Card> cards)
     {
         if (0 == cards.Count)
             return System.Tuple.Create<bool, Hand>(false, null);
@@ -88,12 +89,14 @@ class HandCreator
         Hand hand = new Hand();
         hand.HandRank = HandRank.StraightFlush;
         List<Card> arCards = new List<Card>();
-        arCards.Add(cards);
+        Card[] arQueueCards = cards.ToArray();
+        foreach (Card card in arQueueCards)
+            arCards.Add(card);
         arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ? 1 : x.Value < y.Value ? -1 : 0));
         return System.Tuple.Create(true, hand);
     }
 
-    private static System.Tuple<bool, Hand> CheckFourOfAKind(Queue cards)
+    private static System.Tuple<bool, Hand> CheckFourOfAKind(Queue<Card> cards)
     {
         if (0 == cards.Count)
             return System.Tuple.Create<bool, Hand>(false, null);
@@ -136,14 +139,16 @@ class HandCreator
         return System.Tuple.Create<bool, Hand>(true, hand);
     }
 
-    private static System.Tuple<bool, Hand> CheckFullHouse(Queue cards)
+    private static System.Tuple<bool, Hand> CheckFullHouse(Queue<Card> cards)
     {
         System.Tuple<bool, Hand> prThreeOfAKindHand = CheckThreeOfAKind(cards);
         if (!prThreeOfAKindHand.Item1)
             return System.Tuple.Create<bool, Hand>(false, null);
 
-        Queue qPairCadidate = new Queue();
-        qPairCadidate.Add(prThreeOfAKindHand.Item2.Deck.GetRange(Hand.s_nThreeOfAKind, prThreeOfAKindHand.Item2.Deck.Count - Hand.s_nThreeOfAKind));
+        Queue<Card> qPairCadidate = new Queue<Card>();
+        List<Card> lstCards = prThreeOfAKindHand.Item2.Deck.GetRange(Hand.s_nThreeOfAKind, prThreeOfAKindHand.Item2.Deck.Count - Hand.s_nThreeOfAKind);
+        foreach (Card card in lstCards)
+            qPairCadidate.Enqueue(card);
 
         System.Tuple<bool, Hand> prPair = CheckOnePair(qPairCadidate);
         if (!prPair.Item1)
@@ -159,7 +164,7 @@ class HandCreator
         return System.Tuple.Create<bool, Hand>(true, hand);
     }
 
-    private static System.Tuple<bool, Hand> CheckFlush(Queue cards)
+    private static System.Tuple<bool, Hand> CheckFlush(Queue<Card> cards)
     {
         if (0 == cards.Count)
             return System.Tuple.Create<bool, Hand>(false, null);
@@ -174,12 +179,14 @@ class HandCreator
         Hand hand = new Hand();
         hand.HandRank = HandRank.Flush;
         List<Card> arCards = new List<Card>();
-        arCards.Add(cards);
+        Card[] arQueueCards = cards.ToArray();
+        foreach (Card card in arQueueCards)
+            arCards.Add(card);
         arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ? 1 : x.Value < y.Value ? -1 : 0));
         return System.Tuple.Create<bool, Hand>(true, hand);
     }
 
-    private static System.Tuple<bool, Hand> CheckStraight(Queue cards)
+    private static System.Tuple<bool, Hand> CheckStraight(Queue<Card> cards)
     {
         if (0 == cards.Count)
             return System.Tuple.Create<bool, Hand>(false, null);
@@ -204,12 +211,14 @@ class HandCreator
         Hand hand = new Hand();
         hand.HandRank = HandRank.Straight;
         List<Card> arCards = new List<Card>();
-        arCards.Add(cards);
+        Card[] arQueueCards = cards.ToArray();
+        foreach (Card card in arQueueCards)
+            arCards.Add(card);
         arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ? 1 : x.Value < y.Value ? -1 : 0));
         return System.Tuple.Create<bool, Hand>(true, hand);
     }
 
-    private static System.Tuple<bool, Hand> CheckThreeOfAKind(Queue cards)
+    private static System.Tuple<bool, Hand> CheckThreeOfAKind(Queue<Card> cards)
     {
         if (0 == cards.Count)
             return System.Tuple.Create<bool, Hand>(false, null);
@@ -252,12 +261,12 @@ class HandCreator
         return System.Tuple.Create<bool, Hand>(true, hand);
     }
 
-    private static System.Tuple<bool, Hand> CheckTwoPair(Queue cards)
+    private static System.Tuple<bool, Hand> CheckTwoPair(Queue<Card> cards)
     {
         return System.Tuple.Create<bool, Hand>(true, null);
     }
 
-    private static System.Tuple<bool, Hand> CheckOnePair(Queue cards)
+    private static System.Tuple<bool, Hand> CheckOnePair(Queue<Card> cards)
     {
         return System.Tuple.Create<bool, Hand>(true, null);
     }

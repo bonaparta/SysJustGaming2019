@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace PokerGame
@@ -7,9 +8,9 @@ public static class DeckCreator
     public static Queue<Card> CreateCards()
     {
         Queue<Card> cards = new Queue<Card>();
-        for(int i = 2; i <= 14; i++)
+        for (int i = 2; i <= 14; i++)
         {
-            foreach(Suit suit in System.Enum.GetValues(typeof(Suit)))
+            foreach (Suit suit in Enum.GetValues(typeof(Suit)))
             {
                 cards.Enqueue(new Card()
                 {
@@ -25,9 +26,9 @@ public static class DeckCreator
     private static Queue<Card> Shuffle(Queue<Card> cards)
     {
         //Shuffle the existing cards using Fisher-Yates Modern
-        List<Card> transformedCards = cards.ToList();
+        Card[] transformedCards = cards.ToArray();
         Random r = new Random(DateTime.Now.Millisecond);
-        for (int n = transformedCards.Count - 1; n > 0; --n)
+        for (int n = transformedCards.Length - 1; n > 0; --n)
         {
             //Step 2: Randomly pick a card which has not been shuffled
             int k = r.Next(n + 1);
@@ -39,7 +40,7 @@ public static class DeckCreator
         }
 
         Queue<Card> shuffledCards = new Queue<Card>();
-        foreach(var card in transformedCards)
+        foreach (var card in transformedCards)
         {
             shuffledCards.Enqueue(card);
         }
