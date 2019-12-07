@@ -3,10 +3,10 @@ using System.Collections.Generic;
 namespace PokerGame
 {
 public static class DeckCreator
-{ 
-    public static Queue CreateCards()
+{
+    public static Queue<Card> CreateCards()
     {
-        Queue cards = new Queue();
+        Queue<Card> cards = new Queue<Card>();
         for(int i = 2; i <= 14; i++)
         {
             foreach(Suit suit in System.Enum.GetValues(typeof(Suit)))
@@ -22,7 +22,7 @@ public static class DeckCreator
         return Shuffle(cards);
     }
 
-    private static Queue Shuffle(Queue cards)
+    private static Queue<Card> Shuffle(Queue<Card> cards)
     {
         //Shuffle the existing cards using Fisher-Yates Modern
         List<Card> transformedCards = cards.ToList();
@@ -38,7 +38,7 @@ public static class DeckCreator
             transformedCards[k] = temp;
         }
 
-        Queue shuffledCards = new Queue();
+        Queue<Card> shuffledCards = new Queue<Card>();
         foreach(var card in transformedCards)
         {
             shuffledCards.Enqueue(card);

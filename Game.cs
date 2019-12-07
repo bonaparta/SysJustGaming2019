@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace PokerGame
@@ -6,7 +7,7 @@ public class Game
 {
     private Player Player1;
     private Player Player2;
-
+    public int TurnCount;
     public Game(string player1name, string player2name)
     {
         Player1 = new Player(player1name);
@@ -20,17 +21,19 @@ public class Game
 
     public bool IsEndOfGame()
     {
-        if(!Player1.Deck.Any())
+        if (Player1.Deck.Count <= 0)
         {
             Console.WriteLine(Player1.Name + " is out of cards!  " + Player2.Name + " WINS!");
+            Console.WriteLine("TURNS: " + TurnCount.ToString());
             return true;
         }
-        else if(!Player2.Deck.Any())
+        else if (Player2.Deck.Count <= 0)
         {
             Console.WriteLine(Player2.Name + " is out of cards!  " + Player1.Name + " WINS!");
+            Console.WriteLine("TURNS: " + TurnCount.ToString());
             return true;
         }
-        else if(TurnCount > 1000)
+        else if (TurnCount > 1000)
         {
             Console.WriteLine("Infinite game!  Let's call the whole thing off.");
             return true;
@@ -42,60 +45,56 @@ public class Game
     {
         Queue<Card> pool = new Queue<Card>();
 
-        //Step 1: Each player flips a card
         var player1card = Player1.Deck.Dequeue();
         var player2card = Player2.Deck.Dequeue();
 
-        pool.Add(player1card);
-        pool.Add(player2card);
+        pool.Enqueue(player1card);
+        pool.Enqueue(player2card);
 
         Console.WriteLine(Player1.Name + " plays " + player1card.DisplayName + ", " + Player2.Name + " plays " + player2card.DisplayName);
-    
-        //Step 2: If the cards have the same value, we have a War!
-        //IMPORTANT: We CONTINUE to have a war as long as the flipped cards are the same value.
+
         while (player1card.Value == player2card.Value)
         {
             Console.WriteLine("WAR!");
-            
-            //If either player doesn't have enough cards for the War, they lose.
             if (Player1.Deck.Count < 4)
             {
                 Player1.Deck.Clear();
                 return;
             }
-            if(Player2.Deck.Count < 4)
+            if (Player2.Deck.Count < 4)
             {
                 Player2.Deck.Clear();
                 return;
             }
-                    
-            //Add three "face-down" cards from each player to a common pool
-            pool.Add(Player1.Deck.Dequeue());
-            pool.Add(Player1.Deck.Dequeue());
-            pool.Add(Player1.Deck.Dequeue());
-            pool.Add(Player2.Deck.Dequeue());
-            pool.Add(Player2.Deck.Dequeue());
-            pool.Add(Player2.Deck.Dequeue());
 
-            //Pop the fourth card from each player's deck
+            pool.Enqueue(Player1.Deck.Dequeue());
+            pool.Enqueue(Player1.Deck.Dequeue());
+            pool.Enqueue(Player1.Deck.Dequeue());
+            pool.Enqueue(Player2.Deck.Dequeue());
+            pool.Enqueue(Player2.Deck.Dequeue());
+            pool.Enqueue(Player2.Deck.Dequeue());
+
             player1card = Player1.Deck.Dequeue();
             player2card = Player2.Deck.Dequeue();
-            
+
             pool.Enqueue(player1card);
             pool.Enqueue(player2card);
 
             Console.WriteLine(Player1.Name + " plays " + player1card.DisplayName + ", " + Player2.Name + " plays " + player2card.DisplayName);
         }
 
-        //Add the won cards to the winning player's deck, and display which player won that hand.  This uses our custom extension method from earlier.
-        if(player1card.Value < player2card.Value)
+        if (player1card.Value < player2card.Value)
         {
-            Player2.Deck.Enqueue(pool);
+            Card[] arCards = pool.ToArray();
+            foreach (Card card in arCards)
+                Player2.Deck.Enqueue(card);
             Console.WriteLine(Player2.Name + " takes the hand!");
         }
         else
         {
-            Player1.Deck.Enqueue(pool);
+            Card[] arCards = pool.ToArray();
+            foreach (Card card in arCards)
+                Player1.Deck.Enqueue(card);
             Console.WriteLine(Player1.Name + " takes the hand!");
         }
 
