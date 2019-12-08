@@ -15,7 +15,7 @@ public static class DeckCreator
                 cards.Enqueue(new Card()
                 {
                     Suit = suit,
-                    Value = i,
+                    Rank = i,
                     Display = GetShortName(i, suit)
                 });
             }

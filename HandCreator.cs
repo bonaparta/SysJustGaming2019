@@ -61,9 +61,9 @@ class HandCreator
         foreach (Card card in arQueueCards)
             arCards.Add(card);
         arCards.Sort(Comparer<Card>.Create((x, y) =>
-            (x.Value > y.Value || (x.Value == y.Value && x.Suit > y.Suit)) ? 1 :
-            (x.Value < y.Value || (x.Value == y.Value && x.Suit < y.Suit)) ? -1 : 0));
-        hand.Deck = arCards;
+            (x.Rank > y.Rank || (x.Rank == y.Rank && x.Suit > y.Suit)) ? 1 :
+            (x.Rank < y.Rank || (x.Rank == y.Rank && x.Suit < y.Suit)) ? -1 : 0));
+        hand.Cards = arCards;
         return hand;
     }
 
@@ -79,7 +79,7 @@ class HandCreator
         Suit nDefaultSuit = ((Card)cards.Peek()).Suit;
         foreach (Card card in cards)
         {
-            int nIndex = card.Value - (int)CardValue.MinValue;
+            int nIndex = card.Rank - (int)CardValue.MinValue;
             if (nDefaultSuit == card.Suit && !arLinearSort[nIndex])
                 arLinearSort[nIndex] = true;
             else
@@ -92,7 +92,7 @@ class HandCreator
         Card[] arQueueCards = cards.ToArray();
         foreach (Card card in arQueueCards)
             arCards.Add(card);
-        arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ? 1 : x.Value < y.Value ? -1 : 0));
+        arCards.Sort(Comparer<Card>.Create((x, y) => x.Rank > y.Rank ? 1 : x.Rank < y.Rank ? -1 : 0));
         return System.Tuple.Create(true, hand);
     }
 
@@ -108,7 +108,7 @@ class HandCreator
         int nCount = 0;
         foreach (Card card in cards)
         {
-            int nIndex = card.Value - (int)CardValue.MinValue;
+            int nIndex = card.Rank - (int)CardValue.MinValue;
             arLinearSort[nIndex].Add(card);
             nCount = System.Math.Max(nCount, arLinearSort[nIndex].Count);
         }
@@ -146,7 +146,7 @@ class HandCreator
             return System.Tuple.Create<bool, Hand>(false, null);
 
         Queue<Card> qPairCadidate = new Queue<Card>();
-        List<Card> lstCards = prThreeOfAKindHand.Item2.Deck.GetRange(Hand.s_nThreeOfAKind, prThreeOfAKindHand.Item2.Deck.Count - Hand.s_nThreeOfAKind);
+        List<Card> lstCards = prThreeOfAKindHand.Item2.Cards.GetRange(Hand.s_nThreeOfAKind, prThreeOfAKindHand.Item2.Cards.Count - Hand.s_nThreeOfAKind);
         foreach (Card card in lstCards)
             qPairCadidate.Enqueue(card);
 
@@ -158,9 +158,9 @@ class HandCreator
         hand.HandRank = HandRank.FourOfAKind;
         List<Card> arCards = new List<Card>();
 
-        hand.Deck = new List<Card>();
-        hand.Deck.AddRange(prThreeOfAKindHand.Item2.Deck.GetRange(0, Hand.s_nThreeOfAKind));
-        hand.Deck.AddRange(prPair.Item2.Deck);
+        hand.Cards = new List<Card>();
+        hand.Cards.AddRange(prThreeOfAKindHand.Item2.Cards.GetRange(0, Hand.s_nThreeOfAKind));
+        hand.Cards.AddRange(prPair.Item2.Cards);
         return System.Tuple.Create<bool, Hand>(true, hand);
     }
 
@@ -182,7 +182,7 @@ class HandCreator
         Card[] arQueueCards = cards.ToArray();
         foreach (Card card in arQueueCards)
             arCards.Add(card);
-        arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ? 1 : x.Value < y.Value ? -1 : 0));
+        arCards.Sort(Comparer<Card>.Create((x, y) => x.Rank > y.Rank ? 1 : x.Rank < y.Rank ? -1 : 0));
         return System.Tuple.Create<bool, Hand>(true, hand);
     }
 
@@ -197,7 +197,7 @@ class HandCreator
 
         foreach (Card card in cards)
         {
-            int nIndex = card.Value - (int)CardValue.MinValue;
+            int nIndex = card.Rank - (int)CardValue.MinValue;
             if (!arLinearSort[nIndex])
                 arLinearSort[nIndex] = true;
             else
@@ -214,7 +214,7 @@ class HandCreator
         Card[] arQueueCards = cards.ToArray();
         foreach (Card card in arQueueCards)
             arCards.Add(card);
-        arCards.Sort(Comparer<Card>.Create((x, y) => x.Value > y.Value ? 1 : x.Value < y.Value ? -1 : 0));
+        arCards.Sort(Comparer<Card>.Create((x, y) => x.Rank > y.Rank ? 1 : x.Rank < y.Rank ? -1 : 0));
         return System.Tuple.Create<bool, Hand>(true, hand);
     }
 
@@ -230,7 +230,7 @@ class HandCreator
         int nCount = 0;
         foreach (Card card in cards)
         {
-            int nIndex = card.Value - (int)CardValue.MinValue;
+            int nIndex = card.Rank - (int)CardValue.MinValue;
             arLinearSort[nIndex].Add(card);
             nCount = System.Math.Max(nCount, arLinearSort[nIndex].Count);
         }

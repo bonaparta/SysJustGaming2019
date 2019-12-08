@@ -4,12 +4,12 @@ public class Card
 {
     public string Display { get; set; }
     public Suit Suit { get; set; }
-    public int Value { get; set; }
+    public int Rank { get; set; }
     public string DisplayCard
     {
         get
         {
-            return GetShortName(Suit, Value);
+            return GetShortName(Suit, Rank);
         }
     }
 

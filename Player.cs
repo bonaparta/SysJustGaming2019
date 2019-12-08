@@ -5,8 +5,7 @@ namespace PokerGame
 public class Player
 {
     public string Name { get; set; }
-    public Queue<Card> Deck { get; set; }
-    public Hand SortedDeck { get; set; }
+    public Hand Hand { get; set; }
 
     public Player() { }
 
@@ -15,48 +14,42 @@ public class Player
         Name = name;
     }
 
-    public Queue<Card> Deal(Queue<Card> cards)
-    {
-        Queue<Card> player1cards = new Queue<Card>();
-        Queue<Card> player2cards = new Queue<Card>();
-
-        int counter = 2;
-        while (cards.Count > 0)
-        {
-            if (counter % 2 == 0) //Card etiquette says the player who is NOT the dealer gets first card
-            {
-                player2cards.Enqueue(cards.Dequeue());
-            }
-            else
-            {
-                player1cards.Enqueue(cards.Dequeue());
-            }
-            counter++;
-        }
-
-        Deck = player1cards;
-        return player2cards;
-    }
-
     public void AddCard(Card card)
     {
-        Deck.Enqueue(card);
+        Hand.Cards.Add(card);
     }
 
     public string Display
     {
         get
         {
-            if (null == SortedDeck)
-                SortedDeck = HandCreator.Arrange(Deck);
+            if (null == Hand.SortedCards)
+                Hand.SortedCards = HandCreator.Arrange(Hand.Cards);
 
-            string strReturn = System.Enum.GetName(typeof(HandRank), SortedDeck.HandRank);
-            foreach (Card card in SortedDeck.Deck)
+            string strReturn = System.Enum.GetName(typeof(HandRank), Hand.HandRank);
+            foreach (Card card in Hand.Cards)
             {
                 strReturn += " " + card.Display;
             }
             return strReturn;
         }
     }
+
+    public void Save()
+    {
+        m_arFile = Hand.Cards.ToArray();
+    }
+
+    public void Load()
+    {
+        if (null != m_arFile)
+        {
+            List<Card> lstLoad = new List<Card>(m_arFile);
+            Hand.Cards = lstLoad;
+            Hand.SortedCards = null;
+        }
+    }
+
+    private Card[] m_arFile;
 }
 }  // namespace PokerGame

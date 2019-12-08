@@ -14,7 +14,7 @@ namespace SysJustGaming2019
             PokerGame.Card card = new PokerGame.Card()
             {
                 Suit = PokerGame.Suit.Clubs,
-                Value = 1,
+                Rank = 1,
                 Display = "S" + 10
             };
             Console.WriteLine(card.ToString());

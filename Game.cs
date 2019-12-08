@@ -5,100 +5,32 @@ namespace PokerGame
 {
 public class Game
 {
-    private Player Player1;
-    private Player Player2;
-    public int TurnCount;
-    public Game(string player1name, string player2name)
+    private List<Player> m_lstPlayers;
+    private Deck m_dkDeck;
+    public Game(List<Player> lstPlayers, Deck dkDeck)
     {
-        Player1 = new Player(player1name);
-        Player2 = new Player(player2name);
-
-        var cards = DeckCreator.CreateCards(); //Returns a shuffled set of cards
-
-        var deck = Player1.Deal(cards); //Returns Player2's deck.  Player1 keeps his.
-        Player2.Deck = deck;
+        m_lstPlayers = lstPlayers;
+        m_dkDeck = dkDeck;
     }
 
-    public bool IsEndOfGame()
+    public Result Play()
     {
-        if (Player1.Deck.Count <= 0)
+        foreach(Player player in m_lstPlayers)
         {
-            Console.WriteLine(Player1.Name + " is out of cards!  " + Player2.Name + " WINS!");
-            Console.WriteLine("TURNS: " + TurnCount.ToString());
-            return true;
-        }
-        else if (Player2.Deck.Count <= 0)
-        {
-            Console.WriteLine(Player2.Name + " is out of cards!  " + Player1.Name + " WINS!");
-            Console.WriteLine("TURNS: " + TurnCount.ToString());
-            return true;
-        }
-        else if (TurnCount > 1000)
-        {
-            Console.WriteLine("Infinite game!  Let's call the whole thing off.");
-            return true;
-        }
-        return false;
-    }
+            if (null == player.Hand)
+                player.Hand = new Hand();
+            if (null == player.Hand.Cards)
+                player.Hand.Cards = new List<Card>();
 
-    public void PlayTurn()
-    {
-        Queue<Card> pool = new Queue<Card>();
-
-        var player1card = Player1.Deck.Dequeue();
-        var player2card = Player2.Deck.Dequeue();
-
-        pool.Enqueue(player1card);
-        pool.Enqueue(player2card);
-
-        Console.WriteLine(Player1.Name + " plays " + player1card.Display + ", " + Player2.Name + " plays " + player2card.Display);
-
-        while (player1card.Value == player2card.Value)
-        {
-            Console.WriteLine("WAR!");
-            if (Player1.Deck.Count < 4)
-            {
-                Player1.Deck.Clear();
-                return;
-            }
-            if (Player2.Deck.Count < 4)
-            {
-                Player2.Deck.Clear();
-                return;
-            }
-
-            pool.Enqueue(Player1.Deck.Dequeue());
-            pool.Enqueue(Player1.Deck.Dequeue());
-            pool.Enqueue(Player1.Deck.Dequeue());
-            pool.Enqueue(Player2.Deck.Dequeue());
-            pool.Enqueue(Player2.Deck.Dequeue());
-            pool.Enqueue(Player2.Deck.Dequeue());
-
-            player1card = Player1.Deck.Dequeue();
-            player2card = Player2.Deck.Dequeue();
-
-            pool.Enqueue(player1card);
-            pool.Enqueue(player2card);
-
-            Console.WriteLine(Player1.Name + " plays " + player1card.Display + ", " + Player2.Name + " plays " + player2card.Display);
+            while (player.Hand.Cards.Count < 5)
+                player.Hand.Cards.Add(m_dkDeck.Draw());
         }
 
-        if (player1card.Value < player2card.Value)
+        return new Result
         {
-            Card[] arCards = pool.ToArray();
-            foreach (Card card in arCards)
-                Player2.Deck.Enqueue(card);
-            Console.WriteLine(Player2.Name + " takes the hand!");
-        }
-        else
-        {
-            Card[] arCards = pool.ToArray();
-            foreach (Card card in arCards)
-                Player1.Deck.Enqueue(card);
-            Console.WriteLine(Player1.Name + " takes the hand!");
-        }
-
-        TurnCount++;
+            Winner = Judge.Battle(m_lstPlayers),
+            Players = m_lstPlayers
+        };
     }
 }
 }  // namespace PokerGame
