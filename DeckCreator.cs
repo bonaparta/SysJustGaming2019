@@ -21,7 +21,7 @@ public static class DeckCreator
             }
         }
 
-        Shuffle(cards);
+        cards = Shuffle(cards);
         Deck deck = new Deck()
         {
             Cards = cards

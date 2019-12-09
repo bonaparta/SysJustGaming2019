@@ -60,9 +60,10 @@ class HandCreator
         Card[] arTmpCards = cards.ToArray();
         foreach (Card card in arTmpCards)
             arCards.Add(card);
+        // 降冪排序
         arCards.Sort(Comparer<Card>.Create((x, y) =>
-            (x.Rank > y.Rank || (x.Rank == y.Rank && x.Suit > y.Suit)) ? 1 :
-            (x.Rank < y.Rank || (x.Rank == y.Rank && x.Suit < y.Suit)) ? -1 : 0));
+            (x.Rank > y.Rank || (x.Rank == y.Rank && x.Suit < y.Suit)) ? 1 :
+            (x.Rank < y.Rank || (x.Rank == y.Rank && x.Suit > y.Suit)) ? -1 : 0));
         hand.SortedCards = arCards;
         return hand;
     }
@@ -96,7 +97,8 @@ class HandCreator
         Card[] arQueueCards = cards.ToArray();
         foreach (Card card in arQueueCards)
             arCards.Add(card);
-        arCards.Sort(Comparer<Card>.Create((x, y) => x.Rank > y.Rank ? 1 : x.Rank < y.Rank ? -1 : 0));
+        // 降冪排序
+        arCards.Sort(Comparer<Card>.Create((x, y) => x.Rank < y.Rank ? 1 : x.Rank > y.Rank ? -1 : 0));
         hand.SortedCards = arCards;
         return System.Tuple.Create(true, hand);
     }
@@ -128,7 +130,8 @@ class HandCreator
         {
             if (Hand.s_nFourOfAKind == arLinearSort[i].Count)
             {
-                arLinearSort[i].Sort(Comparer<Card>.Create((x, y) => x.Suit > y.Suit ? 1 : x.Suit < y.Suit ? -1 : 0));
+                // 降冪排序
+                arLinearSort[i].Sort(Comparer<Card>.Create((x, y) => x.Suit < y.Suit ? 1 : x.Suit > y.Suit ? -1 : 0));
                 arCards.AddRange(arLinearSort[i]);
                 for (int j = 0; j < arLinearSort.Length; ++j)
                 {
@@ -187,7 +190,8 @@ class HandCreator
         Card[] arQueueCards = cards.ToArray();
         foreach (Card card in arQueueCards)
             arCards.Add(card);
-        arCards.Sort(Comparer<Card>.Create((x, y) => x.Rank > y.Rank ? 1 : x.Rank < y.Rank ? -1 : 0));
+        // 降冪排序
+        arCards.Sort(Comparer<Card>.Create((x, y) => x.Rank < y.Rank ? 1 : x.Rank > y.Rank ? -1 : 0));
         hand.SortedCards = arCards;
         return System.Tuple.Create<bool, Hand>(true, hand);
     }
@@ -220,7 +224,8 @@ class HandCreator
         Card[] arQueueCards = cards.ToArray();
         foreach (Card card in arQueueCards)
             arCards.Add(card);
-        arCards.Sort(Comparer<Card>.Create((x, y) => x.Rank > y.Rank ? 1 : x.Rank < y.Rank ? -1 : 0));
+        // 降冪排序
+        arCards.Sort(Comparer<Card>.Create((x, y) => x.Rank < y.Rank ? 1 : x.Rank > y.Rank ? -1 : 0));
         hand.SortedCards = arCards;
         return System.Tuple.Create<bool, Hand>(true, hand);
     }
@@ -252,7 +257,8 @@ class HandCreator
         {
             if (Hand.s_nThreeOfAKind == arLinearSort[i].Count)
             {
-                arLinearSort[i].Sort(Comparer<Card>.Create((x, y) => x.Suit > y.Suit ? 1 : x.Suit < y.Suit ? -1 : 0));
+                // 降冪排序
+                arLinearSort[i].Sort(Comparer<Card>.Create((x, y) => x.Suit < y.Suit ? 1 : x.Suit > y.Suit ? -1 : 0));
                 arCards.AddRange(arLinearSort[i]);
                 for (int j = arLinearSort.Length - 1; j >= 0; --j)
                 {
@@ -319,14 +325,18 @@ class HandCreator
         {
             if (Hand.s_nPair == arLinearSort[i].Count)
             {
-                arLinearSort[i].Sort(Comparer<Card>.Create((x, y) => x.Suit > y.Suit ? 1 : x.Suit < y.Suit ? -1 : 0));
+                // 降冪排序
+                //List<Card> arCards0 = arLinearSort[i];
+                arLinearSort[i].Sort(Comparer<Card>.Create((x, y) => x.Suit < y.Suit ? 1 : x.Suit > y.Suit ? -1 : 0));
+                //List<Card> arCards1 = arLinearSort[i];
+                //arLinearSort[i].Sort(Comparer<Card>.Create((x, y) => x.Suit > y.Suit ? 1 : x.Suit < y.Suit ? -1 : 0));
+                //List<Card> arCards2 = arLinearSort[i];
                 arCards.AddRange(arLinearSort[i]);
                 for (int j = arLinearSort.Length - 1; j >= 0; --j)
                 {
                     if (i != j)
                     {
                         arCards.AddRange(arLinearSort[j]);
-                        break;
                     }
                 }
                 break;
