@@ -5,12 +5,13 @@ namespace PokerGame
 {
 public class Game
 {
-    private List<Player> m_lstPlayers;
     private Deck m_dkDeck;
-    public Game(List<Player> lstPlayers, Deck dkDeck)
+    private List<Player> m_lstPlayers;
+
+    public Game(Deck deck, List<Player> lstPlayers)
     {
+        m_dkDeck = deck;
         m_lstPlayers = lstPlayers;
-        m_dkDeck = dkDeck;
     }
 
     public Result Play()
@@ -19,11 +20,11 @@ public class Game
         {
             if (null == player.Hand)
                 player.Hand = new Hand();
-            if (null == player.Hand.Cards)
-                player.Hand.Cards = new List<Card>();
+            if (null == player.Cards)
+                player.Cards = new List<Card>();
 
-            while (player.Hand.Cards.Count < 5)
-                player.Hand.Cards.Add(m_dkDeck.Draw());
+            while (player.Cards.Count < 5)
+                player.Cards.Add(m_dkDeck.Draw());
         }
 
         return new Result

@@ -5,6 +5,7 @@ namespace PokerGame
 public class Player
 {
     public string Name { get; set; }
+    public List<Card> Cards { get; set; }
     public Hand Hand { get; set; }
 
     public Player() { }
@@ -16,18 +17,19 @@ public class Player
 
     public void AddCard(Card card)
     {
-        Hand.Cards.Add(card);
+        Cards.Add(card);
+        Hand = null;
     }
 
     public string Display
     {
         get
         {
-            if (null == Hand.SortedCards)
-                Hand.SortedCards = HandCreator.Arrange(Hand.Cards);
+            if (null == Hand)
+                Hand = HandCreator.Arrange(Cards);
 
             string strReturn = System.Enum.GetName(typeof(HandRank), Hand.HandRank);
-            foreach (Card card in Hand.Cards)
+            foreach (Card card in Hand.SortedCards)
             {
                 strReturn += " " + card.Display;
             }
@@ -37,7 +39,7 @@ public class Player
 
     public void Save()
     {
-        m_arFile = Hand.Cards.ToArray();
+        m_arFile = Cards.ToArray();
     }
 
     public void Load()
@@ -45,8 +47,8 @@ public class Player
         if (null != m_arFile)
         {
             List<Card> lstLoad = new List<Card>(m_arFile);
-            Hand.Cards = lstLoad;
-            Hand.SortedCards = null;
+            Cards = lstLoad;
+            Hand = null;
         }
     }
 

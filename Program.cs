@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PokerGame;
 
 namespace SysJustGaming2019
 {
@@ -11,14 +9,15 @@ namespace SysJustGaming2019
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World");
-            PokerGame.Card card = new PokerGame.Card()
-            {
-                Suit = PokerGame.Suit.Clubs,
-                Rank = 1,
-                Display = "S" + 10
-            };
-            Console.WriteLine(card.ToString());
-            Console.WriteLine(card.Display);
+            Deck deck = DeckCreator.CreateCards();
+            List<Player> players = new List<Player>();
+            players.Add(new Player("A"));
+            players.Add(new Player("B"));
+            Game game = new Game(deck, players);
+
+            Result result = game.Play();
+
+            Console.WriteLine("Winer: {0} Hand: {1}", result.Winner.Name, result.Winner.Display);
         }
     }
 }  // namespace SysJustGaming2019

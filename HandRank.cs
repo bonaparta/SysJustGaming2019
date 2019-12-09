@@ -3,7 +3,7 @@ namespace PokerGame
 public enum HandRank
 {
     HighCard,
-    OnePair,
+    Pair,
     TwoPair,
     ThreeOfAKind,
     Straight,

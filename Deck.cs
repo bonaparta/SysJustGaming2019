@@ -4,23 +4,26 @@ namespace PokerGame
 {
 public class Deck
 {
+    public Queue<Card> Cards { get; set; }
+    private Card[] m_arFile;
+
     public Card Draw()
     {
-        if (m_qCards.Count > 0)
-            return m_qCards.Dequeue();
+        if (Cards.Count > 0)
+            return Cards.Dequeue();
         return null;
     }
 
     public Card HaveACardUpMySleeve(int nRank, Suit eSuit)
     {
         Queue<Card> tmpQ = new Queue<Card>();
-        while (m_qCards.Count > 0)
+        while (Cards.Count > 0)
         {
-            Card card = m_qCards.Dequeue();
+            Card card = Cards.Dequeue();
             if (nRank == card.Rank && eSuit == card.Suit)
             {
-                while (m_qCards.Count > 0)
-                    tmpQ.Enqueue(m_qCards.Dequeue());
+                while (Cards.Count > 0)
+                    tmpQ.Enqueue(Cards.Dequeue());
                 return card;
             }
             else
@@ -31,7 +34,7 @@ public class Deck
 
     public void Save()
     {
-        m_arFile = m_qCards.ToArray();
+        m_arFile = Cards.ToArray();
     }
 
     public void Load()
@@ -39,11 +42,8 @@ public class Deck
         if (null != m_arFile)
         {
             Queue<Card> qLoad = new Queue<Card>(m_arFile);
-            m_qCards = qLoad;
+            Cards = qLoad;
         }
     }
-
-    private Queue<Card> m_qCards;
-    private Card[] m_arFile;
 }
 }  // namespace PokerGame

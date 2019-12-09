@@ -5,10 +5,10 @@ namespace PokerGame
 {
 public static class DeckCreator
 {
-    public static Queue<Card> CreateCards()
+    public static Deck CreateCards()
     {
         Queue<Card> cards = new Queue<Card>();
-        for (int i = 2; i <= 14; i++)
+        for (int i = (int)CardValue.MinValue; i <= (int)CardValue.MaxValue; i++)
         {
             foreach (Suit suit in Enum.GetValues(typeof(Suit)))
             {
@@ -20,7 +20,13 @@ public static class DeckCreator
                 });
             }
         }
-        return Shuffle(cards);
+
+        Shuffle(cards);
+        Deck deck = new Deck()
+        {
+            Cards = cards
+        };
+        return deck;
     }
 
     private static Queue<Card> Shuffle(Queue<Card> cards)

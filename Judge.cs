@@ -19,13 +19,13 @@ public class Judge
                 continue;
             }
 
-            if (plrWinner.Hand.HandRank.CompareTo(player.Hand.HandRank) < 0)
+            if (plrWinner.Hand.HandRank < player.Hand.HandRank)
             {
                 plrWinner = player;
                 continue;
             }
 
-            if (plrWinner.Hand.HandRank.CompareTo(player.Hand.HandRank) == 0)
+            if (plrWinner.Hand.HandRank == player.Hand.HandRank)
             {
                 if (plrWinner.Hand.SortedCards[0].Rank < player.Hand.SortedCards[0].Rank)
                 {
@@ -35,7 +35,7 @@ public class Judge
 
                 if (plrWinner.Hand.SortedCards[0].Rank == player.Hand.SortedCards[0].Rank)
                 {
-                    if (plrWinner.Hand.SortedCards[0].Suit.CompareTo(player.Hand.SortedCards[0].Suit) < 0)
+                    if (plrWinner.Hand.SortedCards[0].Suit < player.Hand.SortedCards[0].Suit)
                     {
                         plrWinner = player;
                         continue;

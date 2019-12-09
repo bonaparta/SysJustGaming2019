@@ -5,7 +5,6 @@ namespace PokerGame
 public class Hand
 {
     public HandRank HandRank { get; set; }
-    public List<Card> Cards { get; set; }
     public List<Card> SortedCards { get; set; }
 
     public static int s_nFourOfAKind = 4;
