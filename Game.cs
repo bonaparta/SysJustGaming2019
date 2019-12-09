@@ -25,6 +25,8 @@ public class Game
 
             while (player.Cards.Count < 5)
                 player.Cards.Add(m_dkDeck.Draw());
+
+            player.Hand = HandCreator.Arrange(player.Cards);
         }
 
         return new Result

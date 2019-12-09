@@ -17,7 +17,7 @@ namespace SysJustGaming2019
 
             Result result = game.Play();
 
-            Console.WriteLine("Winer: {0} Hand: {1}", result.Winner.Name, result.Winner.Display);
+            System.Diagnostics.Debug.WriteLine("Winer: {0} Hand: {1}", result.Winner.Name, result.Winner.Display);
         }
     }
 }  // namespace SysJustGaming2019

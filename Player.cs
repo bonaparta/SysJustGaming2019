@@ -31,7 +31,7 @@ public class Player
             string strReturn = System.Enum.GetName(typeof(HandRank), Hand.HandRank);
             foreach (Card card in Hand.SortedCards)
             {
-                strReturn += " " + card.Display;
+                strReturn += " " + card.DisplayCard;
             }
             return strReturn;
         }

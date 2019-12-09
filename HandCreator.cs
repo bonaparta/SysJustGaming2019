@@ -161,7 +161,7 @@ class HandCreator
             return System.Tuple.Create<bool, Hand>(false, null);
 
         Hand hand = new Hand();
-        hand.HandRank = HandRank.FourOfAKind;
+        hand.HandRank = HandRank.FullHouse;
         List<Card> arCards = new List<Card>();
         arCards.AddRange(prThreeOfAKindHand.Item2.SortedCards.GetRange(0, Hand.s_nThreeOfAKind));
         arCards.AddRange(prPairHand.Item2.SortedCards);
