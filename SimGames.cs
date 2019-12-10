@@ -17,37 +17,55 @@ public class SimGames
             players[i].Cards = new List<Card>();
         }
 
-        //foreach (IEnumerable<Card> cards in Combinations(deck.Cards, 2))
-        //{
-            
-        //}
+        Card[] arAxis = deck.Cards.ToArray();
+        List<Card> lstAxis = new List<Card>(arAxis);
+        lstAxis.Sort(Comparer<Card>.Create((x, y) =>
+            (x.Rank < y.Rank || (x.Rank == y.Rank && x.Suit < y.Suit)) ? 1 :
+            (x.Rank > y.Rank || (x.Rank == y.Rank && x.Suit > y.Suit)) ? -1 : 0));
+        arAxis = lstAxis.ToArray();
 
-        Card card = deck.HaveACardUpMySleeve(14, Suit.Spades);
-        players[0].AddCard(card);
-        card = deck.HaveACardUpMySleeve(14, Suit.Hearts);
-        players[0].AddCard(card);
-        
-        deck.Save();
-        for (int i = 0; i < players.Count; ++i)
-            players[i].Save();
-        
-        int nWin = 0;
-        for (int i = 0; i < s_nTimesPerSim; ++i)
+        double[][] arReport = new double[arAxis.Length][];
+        for (int i = 0; i < arReport.Length; ++i)
         {
-            deck.Load();
-            deck.Cards = DeckCreator.Shuffle(deck.Cards);
-            for (int j = 0; j < players.Count; ++j)
-                players[j].Load();
-            
-            Game game = new Game(deck, players);
-            Result result = game.Play();
-            
-            if (result.Winner == players[0])
-                ++nWin;
+            arReport[i] = new double[arAxis.Length];
+            for (int j = 0; j < arReport[i].Length; ++j)
+                arReport[i][j] = 0;
         }
 
-        players[0].Load();
-        System.Diagnostics.Debug.WriteLine("Player: {0} Win: {1}", players[0].Display, (double)nWin / s_nTimesPerSim);
+        for (int i = 0; i < arAxis.Length - 1; ++i)
+            for (int j = i + 1; j < arAxis.Length; ++j)
+            {
+                for (int k = 0; k < players.Count; ++k)
+                    players[k].Cards.Clear();
+
+                Card card = deck.HaveACardUpMySleeve(arAxis[i].Rank, arAxis[i].Suit);
+                players[0].AddCard(card);
+                card = deck.HaveACardUpMySleeve(arAxis[j].Rank, arAxis[j].Suit);
+                players[0].AddCard(card);
+        
+                deck.Save();
+                for (int i = 0; i < players.Count; ++i)
+                    players[i].Save();
+        
+                int nWin = 0;
+                for (int i = 0; i < s_nTimesPerSim; ++i)
+                {
+                    deck.Load();
+                    deck.Cards = DeckCreator.Shuffle(deck.Cards);
+                    for (int j = 0; j < players.Count; ++j)
+                        players[j].Load();
+            
+                    Game game = new Game(deck, players);
+                    Result result = game.Play();
+            
+                    if (result.Winner == players[0])
+                        ++nWin;
+                }
+
+                players[0].Load();
+                arReport[i][j] = (double)nWin / s_nTimesPerSim;
+                //System.Diagnostics.Debug.WriteLine("Player: {0} Win: {1}", players[0].Display, (double)nWin / s_nTimesPerSim);
+            }
     }
 
     //private static bool NextCombination(IList<int> num, int n, int k)

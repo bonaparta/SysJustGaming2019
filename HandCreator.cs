@@ -62,8 +62,8 @@ class HandCreator
             arCards.Add(card);
         // 降冪排序
         arCards.Sort(Comparer<Card>.Create((x, y) =>
-            (x.Rank > y.Rank || (x.Rank == y.Rank && x.Suit < y.Suit)) ? 1 :
-            (x.Rank < y.Rank || (x.Rank == y.Rank && x.Suit > y.Suit)) ? -1 : 0));
+            (x.Rank < y.Rank || (x.Rank == y.Rank && x.Suit < y.Suit)) ? 1 :
+            (x.Rank > y.Rank || (x.Rank == y.Rank && x.Suit > y.Suit)) ? -1 : 0));
         hand.SortedCards = arCards;
         return hand;
     }
@@ -326,11 +326,7 @@ class HandCreator
             if (Hand.s_nPair == arLinearSort[i].Count)
             {
                 // 降冪排序
-                //List<Card> arCards0 = arLinearSort[i];
                 arLinearSort[i].Sort(Comparer<Card>.Create((x, y) => x.Suit < y.Suit ? 1 : x.Suit > y.Suit ? -1 : 0));
-                //List<Card> arCards1 = arLinearSort[i];
-                //arLinearSort[i].Sort(Comparer<Card>.Create((x, y) => x.Suit > y.Suit ? 1 : x.Suit < y.Suit ? -1 : 0));
-                //List<Card> arCards2 = arLinearSort[i];
                 arCards.AddRange(arLinearSort[i]);
                 for (int j = arLinearSort.Length - 1; j >= 0; --j)
                 {

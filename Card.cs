@@ -17,18 +17,22 @@ public class Card
     {
         string strSuit = "";
         if (Suit.Spades == suit)
-            strSuit = "S";
+            strSuit = "?";
         else if (Suit.Hearts == suit)
-            strSuit = "H";
+            strSuit = "?";
         else if (Suit.Diamonds == suit)
-            strSuit= "D";
+            strSuit= "?";
         else if (Suit.Clubs == suit)
-            strSuit = "C";
+            strSuit = "?";
 
         string strValue = "";
-        if (value >= 2 && value <= 10)
+        if (value >= 2 && value < 10)
         {
             strValue = value.ToString();
+        }
+        else if (value == 10)
+        {
+            strValue = "T";
         }
         else if (value == 11)
         {
