@@ -22,10 +22,7 @@ public static class DeckCreator
         }
 
         cards = Shuffle(cards);
-        Deck deck = new Deck()
-        {
-            Cards = cards
-        };
+        Deck deck = new Deck(cards);
         return deck;
     }
 

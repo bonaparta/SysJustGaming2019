@@ -6,6 +6,13 @@ public class Deck
 {
     public Queue<Card> Cards { get; set; }
     private Card[] m_arFile;
+    private Card[] m_arOriginCards;
+
+    public Deck(Queue<Card> arCards)
+    {
+        Cards = arCards;
+        m_arOriginCards = arCards.ToArray();
+    }
 
     public Card Draw()
     {
@@ -43,6 +50,15 @@ public class Deck
         if (null != m_arFile)
         {
             Queue<Card> qLoad = new Queue<Card>(m_arFile);
+            Cards = qLoad;
+        }
+    }
+
+    public void Restore()
+    {
+        if (null != m_arOriginCards)
+        {
+            Queue<Card> qLoad = new Queue<Card>(m_arOriginCards);
             Cards = qLoad;
         }
     }

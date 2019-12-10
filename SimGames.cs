@@ -35,8 +35,7 @@ public class SimGames
         for (int i = 0; i < arAxis.Length - 1; ++i)
             for (int j = i + 1; j < arAxis.Length; ++j)
             {
-                for (int k = 0; k < players.Count; ++k)
-                    players[k].Cards.Clear();
+                InitGame(deck, players);
 
                 Card card = deck.HaveACardUpMySleeve(arAxis[i].Rank, arAxis[i].Suit);
                 players[0].AddCard(card);
@@ -44,16 +43,16 @@ public class SimGames
                 players[0].AddCard(card);
         
                 deck.Save();
-                for (int i = 0; i < players.Count; ++i)
-                    players[i].Save();
+                for (int k = 0; k < players.Count; ++k)
+                    players[k].Save();
         
                 int nWin = 0;
-                for (int i = 0; i < s_nTimesPerSim; ++i)
+                for (int k = 0; k < s_nTimesPerSim; ++k)
                 {
                     deck.Load();
                     deck.Cards = DeckCreator.Shuffle(deck.Cards);
-                    for (int j = 0; j < players.Count; ++j)
-                        players[j].Load();
+                    for (int m = 0; m < players.Count; ++m)
+                        players[m].Load();
             
                     Game game = new Game(deck, players);
                     Result result = game.Play();
@@ -68,47 +67,14 @@ public class SimGames
             }
     }
 
-    //private static bool NextCombination(IList<int> num, int n, int k)
-    //  {
-    //     bool finished;
- 
-    //     var changed = finished = false;
- 
-    //     if (k <= 0) return false;
- 
-    //     for (var i = k - 1; !finished && !changed; i--)
-    //     {
-    //        if (num[i] < n - 1 - (k - 1) + i)
-    //        {
-    //           num[i]++;
- 
-    //           if (i < k - 1)
-    //              for (var j = i + 1; j < k; j++)
-    //                 num[j] = num[j - 1] + 1;
-    //           changed = true;
-    //        }
-    //        finished = i == 0;
-    //     }
- 
-    //     return changed;
-    //  }
- 
-    //  private static IEnumerable<T> Combinations<T>(IEnumerable<T> elements, int k)
-    //  {
-    //     var elem = elements.ToArray();
-    //     var size = elem.Length;
- 
-    //     if (k > size) yield break;
- 
-    //     var numbers = new int[k];
- 
-    //     for (var i = 0; i < k; i++)
-    //        numbers[i] = i;
- 
-    //     do
-    //     {
-    //        yield return numbers.Select(n => elem[n]);
-    //     } while (NextCombination(numbers, size, k));
-    //  }
+    private static bool InitGame(Deck deck, List<Player> lstPlayers)
+    {
+        deck.Restore();
+
+        for (int k = 0; k < lstPlayers.Count; ++k)
+            lstPlayers[k].Cards.Clear();
+
+        return true;
+    }
 }
 }
