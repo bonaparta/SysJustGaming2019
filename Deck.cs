@@ -24,6 +24,7 @@ public class Deck
             {
                 while (Cards.Count > 0)
                     tmpQ.Enqueue(Cards.Dequeue());
+                Cards = tmpQ;
                 return card;
             }
             else

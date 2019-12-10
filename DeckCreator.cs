@@ -29,7 +29,7 @@ public static class DeckCreator
         return deck;
     }
 
-    private static Queue<Card> Shuffle(Queue<Card> cards)
+    public static Queue<Card> Shuffle(Queue<Card> cards)
     {
         //Shuffle the existing cards using Fisher-Yates Modern
         Card[] transformedCards = cards.ToArray();
