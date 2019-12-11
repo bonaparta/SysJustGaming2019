@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using PokerGame;
 
 namespace PokerGame.Simulator
 {
@@ -63,8 +62,10 @@ public class SimGames
 
                 players[0].Load();
                 arReport[i][j] = (double)nWin / s_nTimesPerSim;
-                //System.Diagnostics.Debug.WriteLine("Player: {0} Win: {1}", players[0].Display, (double)nWin / s_nTimesPerSim);
+                System.Diagnostics.Debug.WriteLine("Progress: Player: {0} Win: {1}", players[0].Display, (double)nWin / s_nTimesPerSim);
             }
+
+        PrintReport(arAxis, arReport);
     }
 
     private static bool InitGame(Deck deck, List<Player> lstPlayers)
@@ -74,6 +75,21 @@ public class SimGames
         for (int k = 0; k < lstPlayers.Count; ++k)
             lstPlayers[k].Cards.Clear();
 
+        return true;
+    }
+
+    private static bool PrintReport(Card[] arAxis, double[][] arReport)
+    {
+        for (int i = 0; i < arAxis.Length; ++i)
+            System.Diagnostics.Debug.Write("\t{0}", arAxis[i].Display);
+
+
+        for (int i = 0; i < arAxis.Length; ++i)
+        {
+            System.Diagnostics.Debug.Write("\n{0}", arAxis[i].Display);
+            for (int j = 0; j < arReport[i].Length; ++j)
+                System.Diagnostics.Debug.Write("\t{0}", arReport[i][j].ToString());
+        }
         return true;
     }
 }

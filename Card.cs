@@ -17,13 +17,13 @@ public class Card
     {
         string strSuit = "";
         if (Suit.Spades == suit)
-            strSuit = "?";
+            strSuit = "S";
         else if (Suit.Hearts == suit)
-            strSuit = "?";
+            strSuit = "H";
         else if (Suit.Diamonds == suit)
-            strSuit= "?";
+            strSuit= "D";
         else if (Suit.Clubs == suit)
-            strSuit = "?";
+            strSuit = "C";
 
         string strValue = "";
         if (value >= 2 && value < 10)

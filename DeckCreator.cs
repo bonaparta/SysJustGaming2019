@@ -31,7 +31,7 @@ public static class DeckCreator
         //Shuffle the existing cards using Fisher-Yates Modern
         Card[] transformedCards = cards.ToArray();
         Random r = new Random(DateTime.Now.Millisecond);
-        for (int n = transformedCards.Length - 1; n > 0; --n)
+        for (int n = transformedCards.Length - 1; n >= 0; --n)
         {
             //Step 2: Randomly pick a card which has not been shuffled
             int k = r.Next(n + 1);
