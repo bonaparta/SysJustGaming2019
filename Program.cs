@@ -8,8 +8,8 @@ namespace SysJustGaming2019
     {
         static void Main(string[] args)
         {
-            //PokerGame.Simulator.SimGames.SimTwoCardsInit();
-            PokerGame.Simulator.SimGamesFini.SimFiveCardsFini();
+            PokerGame.Simulator.SimGames.SimTwoCardsInit();
+            //PokerGame.Simulator.SimGamesFini.SimFiveCardsFini();
             //PokerGame.Simulator.SimGamesDistribution.SimDistribution();
 
             Console.WriteLine("Hello World");

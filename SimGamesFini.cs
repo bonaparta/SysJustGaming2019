@@ -65,15 +65,15 @@ public class SimGamesFini
 
     private static bool PrintReport(string[] arRanks, Card[] arAxis, double[][] arReport)
     {
+        string strLine = "";
         for (int i = 0; i < arRanks.Length; ++i)
-            System.Diagnostics.Debug.Write("\t", arRanks[i]);
+            strLine += "\t" + arRanks[i];
         System.Diagnostics.Debug.WriteLine("");
 
         for (int i = 0; i < arAxis.Length; ++i)
         {
-            //System.Diagnostics.Debug.Write(arAxis[i].DisplayCard);
-            string strLine = arReport[arRanks.Length - 1][i].ToString();
-            for (int j = arRanks.Length - 2; j >= 0; --j)
+            strLine = arAxis[i].DisplayCard;
+            for (int j = 0; j < arRanks.Length; ++j)
                 strLine += "\t" + arReport[j][i].ToString();
             System.Diagnostics.Debug.WriteLine(strLine);
         }

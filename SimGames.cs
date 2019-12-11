@@ -80,15 +80,17 @@ public class SimGames
 
     private static bool PrintReport(Card[] arAxis, double[][] arReport)
     {
-        //for (int i = 0; i < arAxis.Length; ++i)
-        //    System.Diagnostics.Debug.Write("\t{0}", arAxis[i].Display);
-
+        string strLine = "";
+        for (int i = 0; i < arAxis.Length; ++i)
+            strLine += "\t" + arAxis[i].Display;
+        System.Diagnostics.Debug.Write(strLine);
 
         for (int i = 0; i < arAxis.Length; ++i)
         {
-            //System.Diagnostics.Debug.Write("\n{0}", arAxis[i].Display);
+            strLine = "\n" + arAxis[i].Display;
             for (int j = 0; j < arReport[i].Length; ++j)
-                System.Diagnostics.Debug.Write("\t{0}", arReport[i][j].ToString());
+                strLine += "\t" + arReport[i][j].ToString();
+            System.Diagnostics.Debug.Write(strLine);
         }
         return true;
     }
