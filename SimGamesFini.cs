@@ -4,7 +4,7 @@ namespace PokerGame.Simulator
 {
 public class SimGamesFini
 {
-    private static int s_nTimesPerSim = 1000000;
+    private static int s_nTimesPerSim = 100000000;
 
     public static void SimFiveCardsFini()
     {
@@ -71,10 +71,11 @@ public class SimGamesFini
 
         for (int i = 0; i < arAxis.Length; ++i)
         {
-            System.Diagnostics.Debug.Write(arAxis[i].DisplayCard);
-            for (int j = 0; j < arRanks.Length; ++j)
-                System.Diagnostics.Debug.Write("\t", arReport[j][i].ToString());
-            System.Diagnostics.Debug.WriteLine("");
+            //System.Diagnostics.Debug.Write(arAxis[i].DisplayCard);
+            string strLine = arReport[arRanks.Length - 1][i].ToString();
+            for (int j = arRanks.Length - 2; j >= 0; --j)
+                strLine += "\t" + arReport[j][i].ToString();
+            System.Diagnostics.Debug.WriteLine(strLine);
         }
         return true;
     }

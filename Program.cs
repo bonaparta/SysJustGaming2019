@@ -10,6 +10,7 @@ namespace SysJustGaming2019
         {
             //PokerGame.Simulator.SimGames.SimTwoCardsInit();
             PokerGame.Simulator.SimGamesFini.SimFiveCardsFini();
+            //PokerGame.Simulator.SimGamesDistribution.SimDistribution();
 
             Console.WriteLine("Hello World");
             Deck deck = DeckCreator.CreateCards();

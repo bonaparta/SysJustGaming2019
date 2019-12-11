@@ -30,8 +30,8 @@ public static class DeckCreator
     {
         //Shuffle the existing cards using Fisher-Yates Modern
         Card[] transformedCards = cards.ToArray();
-        Random r = new Random(DateTime.Now.Millisecond);
-        for (int n = transformedCards.Length - 1; n >= 0; --n)
+        Random r = new Random(Guid.NewGuid().GetHashCode());
+        for (int n = transformedCards.Length - 1; n > 0; --n)
         {
             //Step 2: Randomly pick a card which has not been shuffled
             int k = r.Next(n + 1);
@@ -54,9 +54,13 @@ public static class DeckCreator
     private static string GetShortName(int value, Suit suit)
     {
         string valueDisplay = "";
-        if (value >= 2 && value <= 10)
+        if (value >= 2 && value < 10)
         {
             valueDisplay = value.ToString();
+        }
+        else if (value == 10)
+        {
+            valueDisplay = "T";
         }
         else if (value == 11)
         {
